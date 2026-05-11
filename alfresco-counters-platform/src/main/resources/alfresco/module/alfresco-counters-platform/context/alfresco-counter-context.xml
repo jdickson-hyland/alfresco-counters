@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Counter service -->
+    <bean id="counterService"
+          class="com.hyland.alfresco.counters.countertool.service.CounterServiceImpl">
+        <property name="nodeService"               ref="NodeService"/>
+        <property name="searchService"             ref="SearchService"/>
+        <property name="retryingTransactionHelper" ref="retryingTransactionHelper"/>
+        <property name="jobLockService"            ref="jobLockService"/>
+    </bean>
+
+    <!-- Bootstrap: creates Counter Store folder on first startup -->
+    <bean id="counterBootstrapComponent"
+          class="com.hyland.alfresco.counters.countertool.service.CounterBootstrapComponent"
+          parent="module.baseComponent">
+        <property name="moduleId"          value="alfresco-counters-platform"/>
+        <property name="name"              value="CounterBootstrapComponent"/>
+        <property name="description"       value="Creates the Counter Store folder in Data Dictionary"/>
+        <property name="sinceVersion"      value="1.0"/>
+        <property name="appliesFromVersion" value="1.0"/>
+        <property name="counterService"    ref="counterService"/>
+    </bean>
+
+    <!-- Rule action executer -->
+    <bean id="set-counter-value"
+          class="com.hyland.alfresco.counters.countertool.action.SetCounterValueActionExecuter"
+          parent="action-executer">
+        <property name="counterService"   ref="counterService"/>
+        <property name="nodeService"      ref="NodeService"/>
+        <property name="namespaceService" ref="NamespaceService"/>
+    </bean>
+
+    <!-- Web script beans -->
+    <bean id="webscript.hyland.counters.counters.get"
+          class="com.hyland.alfresco.counters.countertool.webscript.CountersListWebScript"
+          parent="webscript">
+        <property name="counterService" ref="counterService"/>
+    </bean>
+
+    <bean id="webscript.hyland.counters.counters.post"
+          class="com.hyland.alfresco.counters.countertool.webscript.CounterCreateWebScript"
+          parent="webscript">
+        <property name="counterService" ref="counterService"/>
+    </bean>
+
+    <bean id="webscript.hyland.counters.counter.get"
+          class="com.hyland.alfresco.counters.countertool.webscript.CounterGetWebScript"
+          parent="webscript">
+        <property name="counterService" ref="counterService"/>
+    </bean>
+
+    <bean id="webscript.hyland.counters.counter.put"
+          class="com.hyland.alfresco.counters.countertool.webscript.CounterUpdateWebScript"
+          parent="webscript">
+        <property name="counterService" ref="counterService"/>
+    </bean>
+
+    <bean id="webscript.hyland.counters.counter.delete"
+          class="com.hyland.alfresco.counters.countertool.webscript.CounterDeleteWebScript"
+          parent="webscript">
+        <property name="counterService" ref="counterService"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="cntr:counterModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+    <description>Hyland Counter Tool Content Model</description>
+    <author>Hyland</author>
+    <version>1.0</version>
+
+    <imports>
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+        <import uri="http://www.alfresco.org/model/system/1.0"     prefix="sys"/>
+        <import uri="http://www.alfresco.org/model/content/1.0"    prefix="cm"/>
+    </imports>
+
+    <namespaces>
+        <namespace uri="http://www.hyland.com/model/counter/1.0" prefix="cntr"/>
+    </namespaces>
+
+    <types>
+        <type name="cntr:counter">
+            <title>Counter</title>
+            <description>A named, auto-incrementing counter node</description>
+            <parent>sys:base</parent>
+            <properties>
+                <property name="cntr:counterName">
+                    <title>Counter Name</title>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                </property>
+                <property name="cntr:currentValue">
+                    <title>Current Value</title>
+                    <type>d:long</type>
+                    <default>0</default>
+                </property>
+                <property name="cntr:startValue">
+                    <title>Start Value</title>
+                    <type>d:long</type>
+                    <default>0</default>
+                </property>
+                <property name="cntr:increment">
+                    <title>Increment</title>
+                    <type>d:int</type>
+                    <default>1</default>
+                </property>
+                <property name="cntr:padding">
+                    <title>Zero-Pad Width</title>
+                    <type>d:int</type>
+                    <default>0</default>
+                </property>
+                <property name="cntr:formatTemplate">
+                    <title>Format Template</title>
+                    <description>Template string, e.g. INV-{YYYY}{MM}-{value}</description>
+                    <type>d:text</type>
+                    <default>{value}</default>
+                </property>
+            </properties>
+        </type>
+    </types>
+
+</model>

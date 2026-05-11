@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webscript>
+    <shortname>List Counters</shortname>
+    <description>Returns all configured counters</description>
+    <url>/hyland/counters</url>
+    <format default="json">extension</format>
+    <authentication>admin</authentication>
+    <transaction>required</transaction>
+    <family>Hyland Counter Tool</family>
+</webscript>

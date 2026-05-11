@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webscript>
+    <shortname>Counter Admin</shortname>
+    <description>Admin UI for managing Hyland counters</description>
+    <url>/hyland/counter-admin</url>
+    <authentication>admin</authentication>
+    <family>admin-console</family>
+</webscript>

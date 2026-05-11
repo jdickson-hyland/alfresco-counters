@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Increase Tomcat static resource cache from the default 10 MB to 100 MB.
+         Share ships a large volume of JS/CSS/image assets that exhaust the default. -->
+    <Resources cachingAllowed="true" cacheMaxSize="102400" />
+</Context>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webscript>
+    <shortname>Get Counter</shortname>
+    <description>Returns configuration for a single named counter</description>
+    <url>/hyland/counters/{name}</url>
+    <format default="json">extension</format>
+    <authentication>admin</authentication>
+    <transaction>required</transaction>
+    <family>Hyland Counter Tool</family>
+</webscript>
