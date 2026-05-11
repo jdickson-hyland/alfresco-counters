@@ -8,7 +8,6 @@
     <bean id="counterService"
           class="com.hyland.alfresco.counters.countertool.service.CounterServiceImpl">
         <property name="nodeService"               ref="NodeService"/>
-        <property name="searchService"             ref="SearchService"/>
         <property name="retryingTransactionHelper" ref="retryingTransactionHelper"/>
         <property name="jobLockService"            ref="jobLockService"/>
     </bean>

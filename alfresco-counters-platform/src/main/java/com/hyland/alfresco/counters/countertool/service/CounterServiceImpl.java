@@ -9,8 +9,6 @@ import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
-import org.alfresco.service.cmr.search.ResultSet;
-import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.repo.lock.JobLockService;
@@ -26,7 +24,6 @@ import java.util.Map;
 public class CounterServiceImpl implements CounterService {
 
     private NodeService nodeService;
-    private SearchService searchService;
     private RetryingTransactionHelper retryingTransactionHelper;
     private JobLockService jobLockService;
 
@@ -35,7 +32,6 @@ public class CounterServiceImpl implements CounterService {
     // --- Spring setters ---
 
     public void setNodeService(NodeService nodeService)                         { this.nodeService = nodeService; }
-    public void setSearchService(SearchService searchService)                   { this.searchService = searchService; }
     public void setRetryingTransactionHelper(RetryingTransactionHelper h)       { this.retryingTransactionHelper = h; }
     public void setJobLockService(JobLockService jobLockService)                { this.jobLockService = jobLockService; }
 
@@ -186,16 +182,20 @@ public class CounterServiceImpl implements CounterService {
     }
 
     NodeRef findDataDictionary() {
-        StoreRef store = StoreRef.STORE_REF_WORKSPACE_SPACESSTORE;
-        ResultSet rs = searchService.query(store, SearchService.LANGUAGE_XPATH, "/app:company_home/app:dictionary");
-        try {
-            if (rs.length() == 0) {
-                throw new AlfrescoRuntimeException("Data Dictionary folder not found");
-            }
-            return rs.getNodeRef(0);
-        } finally {
-            rs.close();
+        NodeRef rootNode = nodeService.getRootNode(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+        List<ChildAssociationRef> homes = nodeService.getChildAssocs(rootNode,
+            ContentModel.ASSOC_CHILDREN,
+            QName.createQName(NamespaceService.APP_MODEL_1_0_URI, "company_home"));
+        if (homes.isEmpty()) {
+            throw new AlfrescoRuntimeException("Company Home not found");
         }
+        List<ChildAssociationRef> dicts = nodeService.getChildAssocs(homes.get(0).getChildRef(),
+            ContentModel.ASSOC_CONTAINS,
+            QName.createQName(NamespaceService.APP_MODEL_1_0_URI, "dictionary"));
+        if (dicts.isEmpty()) {
+            throw new AlfrescoRuntimeException("Data Dictionary folder not found");
+        }
+        return dicts.get(0).getChildRef();
     }
 
     private NodeRef findCounterNode(String counterName) {
